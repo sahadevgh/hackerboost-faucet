@@ -7,11 +7,11 @@ contract HackerBoostFaucet {
 
     // Mapping to track last request timestamps
     mapping(address => uint256) public addressLastRequest;
-    mapping(uint256 => uint256) public userLastRequest;
+    mapping(string => uint256) public userLastRequest;
 
     // Mapping to track total tokens claimed
     mapping(address => uint256) public addressClaimedTokens;
-    mapping(uint256 => uint256) public userClaimedTokens;
+    mapping(string => uint256) public userClaimedTokens;
 
     uint256 public cooldownTime = 1 days; // Time required between requests
     uint256 public faucetAmount = 0.01 ether; // Amount of ETH dispensed per request
@@ -33,7 +33,7 @@ contract HackerBoostFaucet {
     receive() external payable {}
 
     // Function for users to request test tokens
-    function requestTokens(address payable _req, uint256 _userId) external {
+    function requestTokens(address payable _req, string memory _userId) external {
         require(addressLastRequest[_req] + cooldownTime < block.timestamp, "Cooldown active");
         require(userLastRequest[_userId] + cooldownTime < block.timestamp, "Cooldown active");
         require(address(this).balance >= faucetAmount, "Faucet empty");
